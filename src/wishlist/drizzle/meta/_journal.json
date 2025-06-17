@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1740032004783,
+      "tag": "0000_volatile_franklin_richards",
+      "breakpoints": true
+    }
+  ]
+}
