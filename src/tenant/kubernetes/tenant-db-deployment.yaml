@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tenant-db-deployment
+  labels:
+    app: tenant-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tenant-db
+  template:
+    metadata:
+      labels:
+        app: tenant-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: tenant-db-config

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: products-config
+data:
+  TENANT_ID: "47dd6b24-0b23-46b0-a662-776158d089ba"
+  AUTH_MS_URL: "http://authentication-service:8000"
+  TENANT_MS_URL: "http://tenant-service:8003"
+  DB_HOST: "products-db-service"
+  DB_PORT: "5432"
