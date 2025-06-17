@@ -1,34 +1,43 @@
+# Stage 1: Fetching the node image and building the application
 FROM node:18.18.2 AS builder
 
+# Setting up the work directory
 WORKDIR /wishlist-service
 
+# Copying package.json separately
 COPY package.json ./
 
 # Install pnpm
-RUN npm install -g pnpm typescript tsx
+RUN npm install -g pnpm typescript
 
-# Install dependencies
+# Installing dependencies
 RUN pnpm install
 
-# Copy source
+# Copying the rest of the application
 COPY . .
 
-# Build
+# Building our application
 RUN pnpm run build
 
-# Production image
+# Stage 2: Creating a lightweight image for production
 FROM node:18.18.2-slim
 
-ENV NODE_ENV=production
-ENV PORT=5005
+# Declaring env
+ENV PORT 8004
+ENV NODE_ENV production
 
+# Set working directory
 WORKDIR /wishlist-service
 
+# Copy built files from the previous stage
 COPY --from=builder /wishlist-service/dist ./dist
 COPY --from=builder /wishlist-service/package.json ./package.json
 
+# Install production dependencies only
 RUN npm install --only=production
 
-CMD ["node", "dist/server.js"]
+# Expose server port
+EXPOSE 8004
 
-EXPOSE 5005
+# Start the application
+CMD ["node", "dist/src/server.js"]

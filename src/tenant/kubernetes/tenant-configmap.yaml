@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tenant-config
+data:
+  AUTH_MS_URL: "http://authentication-service:8000"
+  DB_HOST: "tenant-db-service"
+  DB_PORT: "5432"

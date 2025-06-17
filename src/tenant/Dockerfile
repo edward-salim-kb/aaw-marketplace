@@ -1,35 +1,43 @@
+# Stage 1: Fetching the node image and building the application
 FROM node:18.18.2 AS builder
 
-WORKDIR /tenant-service
+# Setting up the work directory
+WORKDIR /service-tenant
 
+# Copying package.json separately
 COPY package.json ./
 
 # Install pnpm
-RUN npm install -g pnpm typescript tsx
+RUN npm install -g pnpm typescript
 
-# Install dependencies
+# Installing dependencies
 RUN pnpm install
 
-# Copy source
+# Copying the rest of the application
 COPY . .
 
-# Build
+# Building our application
 RUN pnpm run build
 
-# Production image
+# Stage 2: Creating a lightweight image for production
 FROM node:18.18.2-slim
 
-ENV NODE_ENV=production
-ENV PORT=5004
+# Declaring env
+ENV PORT 8003
+ENV NODE_ENV production
 
-WORKDIR /tenant-service
+# Set working directory
+WORKDIR /service-tenant
 
-COPY --from=builder /tenant-service/dist ./dist
-COPY --from=builder /tenant-service/package.json ./package.json
+# Copy built files from the previous stage
+COPY --from=builder /service-tenant/dist ./dist
+COPY --from=builder /service-tenant/package.json ./package.json
 
+# Install production dependencies only
 RUN npm install --only=production
 
-CMD ["node", "dist/server.js"]
+# Expose server port
+EXPOSE 8003
 
-
-EXPOSE 5004
+# Start the application
+CMD ["node", "dist/src/server.js"]

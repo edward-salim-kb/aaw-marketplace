@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wishlist-config
+data:
+  TENANT_ID: "47dd6b24-0b23-46b0-a662-776158d089ba"
+  AUTH_MS_URL: "http://authentication-service:8000"
+  DB_HOST: "wishlist-db-service"
+  DB_PORT: "5432"
